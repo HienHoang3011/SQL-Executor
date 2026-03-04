@@ -1,0 +1,56 @@
+# Dependency directories
+node_modules/
+bower_components/
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables (if any)
+.env
+.env.local
+.env.development
+.env.production
+
+# Build output (if using build tools)
+dist/
+build/
+*.min.js
+*.min.css
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Package manager locks (optional - comment out if you want to track them)
+# package-lock.json
+# yarn.lock
+
+# User-specific configuration
+config.local.js

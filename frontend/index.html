@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý Bệnh Viện Tư</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Left Panel: Database Schema -->
+        <aside class="left-panel">
+            <div class="panel-header">
+                <h1>Hệ Thống Quản Lý Bệnh Viện Tư</h1>
+            </div>
+
+            <div class="schema-content">
+                <!-- Giới thiệu hệ thống -->
+                <div class="system-intro">
+                    <h3>Giới thiệu hệ thống</h3>
+                    <p>Hệ thống quản lý bệnh viện tư được thiết kế để quản lý toàn bộ quy trình hoạt động của bệnh viện, từ việc đăng ký bệnh nhân, quản lý lịch hẹn khám, lưu trữ hồ sơ bệnh án, quản lý đơn thuốc, đến thanh toán và quản lý cơ sở vật chất.</p>
+                    <p>Cơ sở dữ liệu bao gồm 8 bảng chính với các mối quan hệ rõ ràng, đảm bảo tính toàn vẹn và nhất quán của dữ liệu.</p>
+                </div>
+
+                <h3 class="schema-title">Cấu trúc các bảng</h3>
+                <!-- Bảng Patients -->
+                <div class="table-schema">
+                    <h3 class="table-name">Patients (Bệnh nhân)</h3>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Kiểu dữ liệu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>patient_id</td><td>int</td></tr>
+                            <tr><td>full_name</td><td>nvarchar(100)</td></tr>
+                            <tr><td>date_of_birth</td><td>date</td></tr>
+                            <tr><td>gender</td><td>nvarchar(10)</td></tr>
+                            <tr><td>phone</td><td>varchar(20)</td></tr>
+                            <tr><td>email</td><td>varchar(100)</td></tr>
+                            <tr><td>address</td><td>nvarchar(200)</td></tr>
+                            <tr><td>insurance_number</td><td>varchar(50)</td></tr>
+                            <tr><td>created_at</td><td>datetime</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Doctors -->
+                <div class="table-schema">
+                    <h3 class="table-name">Doctors (Bác sĩ)</h3>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Kiểu dữ liệu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>doctor_id</td><td>int</td></tr>
+                            <tr><td>full_name</td><td>nvarchar(100)</td></tr>
+                            <tr><td>specialization</td><td>nvarchar(100)</td></tr>
+                            <tr><td>phone</td><td>varchar(20)</td></tr>
+                            <tr><td>email</td><td>varchar(100)</td></tr>
+                            <tr><td>department_id</td><td>int</td></tr>
+                            <tr><td>license_number</td><td>varchar(50)</td></tr>
+                            <tr><td>hire_date</td><td>date</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Appointments -->
+                <div class="table-schema">
+                    <h3 class="table-name">Appointments (Lịch hẹn)</h3>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Kiểu dữ liệu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>appointment_id</td><td>int</td></tr>
+                            <tr><td>patient_id</td><td>int</td></tr>
+                            <tr><td>doctor_id</td><td>int</td></tr>
+                            <tr><td>appointment_date</td><td>datetime</td></tr>
+                            <tr><td>status</td><td>nvarchar(50)</td></tr>
+                            <tr><td>symptoms</td><td>nvarchar(500)</td></tr>
+                            <tr><td>room_id</td><td>int</td></tr>
+                            <tr><td>created_at</td><td>datetime</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Medical_Records -->
+                <div class="table-schema">
+                    <h3 class="table-name">Medical_Records (Hồ sơ bệnh án)</h3>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Kiểu dữ liệu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>record_id</td><td>int</td></tr>
+                            <tr><td>patient_id</td><td>int</td></tr>
+                            <tr><td>doctor_id</td><td>int</td></tr>
+                            <tr><td>appointment_id</td><td>int</td></tr>
+                            <tr><td>diagnosis</td><td>nvarchar(500)</td></tr>
+                            <tr><td>treatment</td><td>nvarchar(500)</td></tr>
+                            <tr><td>notes</td><td>nvarchar(1000)</td></tr>
+                            <tr><td>created_at</td><td>datetime</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Prescriptions -->
+                <div class="table-schema">
+                    <h3 class="table-name">Prescriptions (Đơn thuốc)</h3>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Kiểu dữ liệu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>prescription_id</td><td>int</td></tr>
+                            <tr><td>record_id</td><td>int</td></tr>
+                            <tr><td>medicine_name</td><td>nvarchar(100)</td></tr>
+                            <tr><td>dosage</td><td>nvarchar(100)</td></tr>
+                            <tr><td>frequency</td><td>nvarchar(100)</td></tr>
+                            <tr><td>duration</td><td>nvarchar(50)</td></tr>
+                            <tr><td>quantity</td><td>int</td></tr>
+                            <tr><td>price</td><td>decimal(10,2)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Departments -->
+                <div class="table-schema">
+                    <h3 class="table-name">Departments (Khoa)</h3>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Kiểu dữ liệu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>department_id</td><td>int</td></tr>
+                            <tr><td>department_name</td><td>nvarchar(100)</td></tr>
+                            <tr><td>location</td><td>nvarchar(100)</td></tr>
+                            <tr><td>phone</td><td>varchar(20)</td></tr>
+                            <tr><td>head_doctor_id</td><td>int</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Rooms -->
+                <div class="table-schema">
+                    <h3 class="table-name">Rooms (Phòng)</h3>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Kiểu dữ liệu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>room_id</td><td>int</td></tr>
+                            <tr><td>room_number</td><td>varchar(20)</td></tr>
+                            <tr><td>room_type</td><td>nvarchar(50)</td></tr>
+                            <tr><td>department_id</td><td>int</td></tr>
+                            <tr><td>capacity</td><td>int</td></tr>
+                            <tr><td>status</td><td>nvarchar(50)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Bills -->
+                <div class="table-schema">
+                    <h3 class="table-name">Bills (Hóa đơn)</h3>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Kiểu dữ liệu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>bill_id</td><td>int</td></tr>
+                            <tr><td>patient_id</td><td>int</td></tr>
+                            <tr><td>appointment_id</td><td>int</td></tr>
+                            <tr><td>total_amount</td><td>decimal(10,2)</td></tr>
+                            <tr><td>paid_amount</td><td>decimal(10,2)</td></tr>
+                            <tr><td>payment_status</td><td>nvarchar(50)</td></tr>
+                            <tr><td>payment_date</td><td>datetime</td></tr>
+                            <tr><td>created_at</td><td>datetime</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Panel: SQL Executor -->
+        <main class="right-panel">
+            <div class="executor-header">
+                <h2>🔍 SQL Executor</h2>
+            </div>
+
+            <!-- Query Input Section -->
+            <section class="query-section">
+                <div class="section-header">
+                    <h3>Nhập Câu Lệnh SQL</h3>
+                    <span class="hint">Chỉ hỗ trợ SELECT</span>
+                </div>
+                
+                <textarea 
+                    id="sqlQuery" 
+                    placeholder="Nhập câu lệnh SQL của bạn tại đây"
+                    rows="6"
+                ></textarea>
+                
+                <div class="action-buttons">
+                    <button id="executeBtn" class="btn btn-primary">
+                        Chạy truy vấn
+                    </button>
+                    <button id="clearBtn" class="btn btn-secondary">
+                        Clear
+                    </button>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="section-header">
+                    <h3>Kết Quả Truy Vấn</h3>
+                    <span id="resultCount" class="result-count"></span>
+                </div>
+                
+                <div id="loadingIndicator" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Đang thực thi câu lệnh...</p>
+                </div>
+                
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                
+                <div id="resultsContainer" class="results-container">
+                    <div class="empty-state">
+                        <p>Kết quả truy vấn sẽ hiển thị tại đây</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
