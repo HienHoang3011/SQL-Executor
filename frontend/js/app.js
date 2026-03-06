@@ -98,7 +98,7 @@ function handleClearQuery() {
 // ===== Validation Functions =====
 
 /**
- * Validate câu lệnh SQL
+ * Validate câu lệnh SQL (Basic validation only - Backend handles security checks)
  * @param {string} query - Câu lệnh SQL cần validate
  * @returns {string|null} - Trả về thông báo lỗi hoặc null nếu hợp lệ
  */
@@ -113,21 +113,7 @@ function validateQuery(query) {
         return 'Câu lệnh SQL quá ngắn';
     }
     
-    // Chỉ cho phép SELECT (không phân biệt hoa thường)
-    const trimmedQuery = query.trim().toUpperCase();
-    if (!trimmedQuery.startsWith('SELECT')) {
-        return 'Chỉ cho phép thực thi câu lệnh SELECT. Các câu lệnh INSERT, UPDATE, DELETE, DROP không được phép.';
-    }
-    
-    // Kiểm tra các từ khóa nguy hiểm (double check)
-    const dangerousKeywords = ['DROP', 'DELETE', 'INSERT', 'UPDATE', 'TRUNCATE', 'ALTER', 'CREATE', 'EXEC', 'EXECUTE'];
-    for (const keyword of dangerousKeywords) {
-        const regex = new RegExp(`\\b${keyword}\\b`, 'i');
-        if (regex.test(query)) {
-            return `Phát hiện từ khóa không được phép: ${keyword}. Chỉ cho phép câu lệnh SELECT.`;
-        }
-    }
-    
+    // Backend sẽ xử lý việc kiểm tra SELECT và các keyword nguy hiểm
     return null; // Validation passed
 }
 

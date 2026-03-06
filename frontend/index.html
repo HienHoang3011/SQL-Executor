@@ -11,7 +11,7 @@
         <!-- Left Panel: Database Schema -->
         <aside class="left-panel">
             <div class="panel-header">
-                <h1>Hệ Thống Quản Lý Bệnh Viện Tư</h1>
+                <h1>Hệ Thống Quản Lý Bệnh Viện Đa Khoa Tích Hợp</h1>
             </div>
 
             <div class="schema-content">
@@ -19,186 +19,413 @@
                 <div class="system-intro">
                     <h3>Giới thiệu hệ thống</h3>
                     <p>Hệ thống quản lý bệnh viện tư được thiết kế để quản lý toàn bộ quy trình hoạt động của bệnh viện, từ việc đăng ký bệnh nhân, quản lý lịch hẹn khám, lưu trữ hồ sơ bệnh án, quản lý đơn thuốc, đến thanh toán và quản lý cơ sở vật chất.</p>
-                    <p>Cơ sở dữ liệu bao gồm 8 bảng chính với các mối quan hệ rõ ràng, đảm bảo tính toàn vẹn và nhất quán của dữ liệu.</p>
+                    <p>Cơ sở dữ liệu bao gồm các bảng chính với các mối quan hệ rõ ràng, đảm bảo tính toàn vẹn và nhất quán của dữ liệu.</p>
                 </div>
 
                 <h3 class="schema-title">Cấu trúc các bảng</h3>
-                <!-- Bảng Patients -->
+                
+                <!-- Bảng Department -->
                 <div class="table-schema">
-                    <h3 class="table-name">Patients (Bệnh nhân)</h3>
+                    <h3 class="table-name">Department (Khoa/Phòng)</h3>
+                    <p class="table-description">Đại diện cho các phòng ban, khoa khám bệnh trong bệnh viện.</p>
                     <table class="schema-table">
                         <thead>
                             <tr>
                                 <th>Tên cột</th>
-                                <th>Kiểu dữ liệu</th>
+                                <th>Mô tả</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>patient_id</td><td>int</td></tr>
-                            <tr><td>full_name</td><td>nvarchar(100)</td></tr>
-                            <tr><td>date_of_birth</td><td>date</td></tr>
-                            <tr><td>gender</td><td>nvarchar(10)</td></tr>
-                            <tr><td>phone</td><td>varchar(20)</td></tr>
-                            <tr><td>email</td><td>varchar(100)</td></tr>
-                            <tr><td>address</td><td>nvarchar(200)</td></tr>
-                            <tr><td>insurance_number</td><td>varchar(50)</td></tr>
-                            <tr><td>created_at</td><td>datetime</td></tr>
+                            <tr><td>deptId</td><td>Định danh duy nhất của khoa/phòng</td></tr>
+                            <tr><td>deptName</td><td>Tên gọi chính thức của khoa/phòng</td></tr>
+                            <tr><td>deptType</td><td>Loại hình hoạt động (Lâm sàng, Cận lâm sàng, Hành chính)</td></tr>
+                            <tr><td>location</td><td>Vị trí không gian phòng ban (Tòa nhà, Tầng)</td></tr>
+                            <tr><td>hotline</td><td>Số điện thoại đường dây nóng liên hệ khoa</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Bảng Doctors -->
+                <!-- Bảng Staff -->
                 <div class="table-schema">
-                    <h3 class="table-name">Doctors (Bác sĩ)</h3>
+                    <h3 class="table-name">Staff (Nhân viên)</h3>
+                    <p class="table-description">Lưu trữ hồ sơ lý lịch của đội ngũ y bác sĩ, nhân viên làm việc tại viện.</p>
                     <table class="schema-table">
                         <thead>
                             <tr>
                                 <th>Tên cột</th>
-                                <th>Kiểu dữ liệu</th>
+                                <th>Mô tả</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>doctor_id</td><td>int</td></tr>
-                            <tr><td>full_name</td><td>nvarchar(100)</td></tr>
-                            <tr><td>specialization</td><td>nvarchar(100)</td></tr>
-                            <tr><td>phone</td><td>varchar(20)</td></tr>
-                            <tr><td>email</td><td>varchar(100)</td></tr>
-                            <tr><td>department_id</td><td>int</td></tr>
-                            <tr><td>license_number</td><td>varchar(50)</td></tr>
-                            <tr><td>hire_date</td><td>date</td></tr>
+                            <tr><td>staffId</td><td>Định danh duy nhất của nhân sự</td></tr>
+                            <tr><td>fullName</td><td>Họ và tên đầy đủ của nhân viên y tế</td></tr>
+                            <tr><td>specialty</td><td>Chuyên khoa hoặc nghiệp vụ chuyên môn (Tim mạch, Kế toán...)</td></tr>
+                            <tr><td>gender</td><td>Giới tính</td></tr>
+                            <tr><td>dob</td><td>Ngày tháng năm sinh</td></tr>
+                            <tr><td>phone</td><td>Số điện thoại cá nhân</td></tr>
+                            <tr><td>email</td><td>Địa chỉ thư điện tử liên hệ</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Bảng Appointments -->
+                <!-- Bảng UserAccount -->
                 <div class="table-schema">
-                    <h3 class="table-name">Appointments (Lịch hẹn)</h3>
+                    <h3 class="table-name">UserAccount (Tài khoản người dùng)</h3>
+                    <p class="table-description">Quản lý các tài khoản được phép đăng nhập và sử dụng hệ thống phần mềm.</p>
                     <table class="schema-table">
                         <thead>
                             <tr>
                                 <th>Tên cột</th>
-                                <th>Kiểu dữ liệu</th>
+                                <th>Mô tả</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>appointment_id</td><td>int</td></tr>
-                            <tr><td>patient_id</td><td>int</td></tr>
-                            <tr><td>doctor_id</td><td>int</td></tr>
-                            <tr><td>appointment_date</td><td>datetime</td></tr>
-                            <tr><td>status</td><td>nvarchar(50)</td></tr>
-                            <tr><td>symptoms</td><td>nvarchar(500)</td></tr>
-                            <tr><td>room_id</td><td>int</td></tr>
-                            <tr><td>created_at</td><td>datetime</td></tr>
+                            <tr><td>accountId</td><td>Định danh duy nhất của tài khoản</td></tr>
+                            <tr><td>username</td><td>Tên đăng nhập vào hệ thống phần mềm</td></tr>
+                            <tr><td>password</td><td>Chuỗi mật khẩu đã được mã hóa an toàn</td></tr>
+                            <tr><td>createdAt</td><td>Thời điểm tài khoản được tạo mới</td></tr>
+                            <tr><td>isActive</td><td>Trạng thái hoạt động của tài khoản (Đang hoạt động/Khóa)</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Bảng Medical_Records -->
+                <!-- Bảng Role -->
                 <div class="table-schema">
-                    <h3 class="table-name">Medical_Records (Hồ sơ bệnh án)</h3>
+                    <h3 class="table-name">Role (Vai trò)</h3>
+                    <p class="table-description">Danh mục các nhóm vai trò để phân quyền (RBAC) trên hệ thống.</p>
                     <table class="schema-table">
                         <thead>
                             <tr>
                                 <th>Tên cột</th>
-                                <th>Kiểu dữ liệu</th>
+                                <th>Mô tả</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>record_id</td><td>int</td></tr>
-                            <tr><td>patient_id</td><td>int</td></tr>
-                            <tr><td>doctor_id</td><td>int</td></tr>
-                            <tr><td>appointment_id</td><td>int</td></tr>
-                            <tr><td>diagnosis</td><td>nvarchar(500)</td></tr>
-                            <tr><td>treatment</td><td>nvarchar(500)</td></tr>
-                            <tr><td>notes</td><td>nvarchar(1000)</td></tr>
-                            <tr><td>created_at</td><td>datetime</td></tr>
+                            <tr><td>roleId</td><td>Định danh duy nhất của vai trò</td></tr>
+                            <tr><td>roleName</td><td>Tên gọi của vai trò (Bác sĩ, Lễ tân, Quản trị viên...)</td></tr>
+                            <tr><td>description</td><td>Mô tả chi tiết chức năng, nhiệm vụ của vai trò</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Bảng Prescriptions -->
+                <!-- Bảng Permission -->
                 <div class="table-schema">
-                    <h3 class="table-name">Prescriptions (Đơn thuốc)</h3>
+                    <h3 class="table-name">Permission (Quyền hạn)</h3>
+                    <p class="table-description">Danh mục các quyền thao tác chi tiết trên từng chức năng của phần mềm.</p>
                     <table class="schema-table">
                         <thead>
                             <tr>
                                 <th>Tên cột</th>
-                                <th>Kiểu dữ liệu</th>
+                                <th>Mô tả</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>prescription_id</td><td>int</td></tr>
-                            <tr><td>record_id</td><td>int</td></tr>
-                            <tr><td>medicine_name</td><td>nvarchar(100)</td></tr>
-                            <tr><td>dosage</td><td>nvarchar(100)</td></tr>
-                            <tr><td>frequency</td><td>nvarchar(100)</td></tr>
-                            <tr><td>duration</td><td>nvarchar(50)</td></tr>
-                            <tr><td>quantity</td><td>int</td></tr>
-                            <tr><td>price</td><td>decimal(10,2)</td></tr>
+                            <tr><td>permissionId</td><td>Định danh duy nhất của quyền hạn</td></tr>
+                            <tr><td>permissionName</td><td>Tên quyền thao tác (Ví dụ: Tạo hóa đơn, Sửa hồ sơ)</td></tr>
+                            <tr><td>moduleName</td><td>Tên phân hệ phần mềm mà quyền này tác động đến</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Bảng Departments -->
+                <!-- Bảng Patient -->
                 <div class="table-schema">
-                    <h3 class="table-name">Departments (Khoa)</h3>
+                    <h3 class="table-name">Patient (Bệnh nhân)</h3>
+                    <p class="table-description">Quản lý hồ sơ thông tin cá nhân và liên hệ của người bệnh.</p>
                     <table class="schema-table">
                         <thead>
                             <tr>
                                 <th>Tên cột</th>
-                                <th>Kiểu dữ liệu</th>
+                                <th>Mô tả</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>department_id</td><td>int</td></tr>
-                            <tr><td>department_name</td><td>nvarchar(100)</td></tr>
-                            <tr><td>location</td><td>nvarchar(100)</td></tr>
-                            <tr><td>phone</td><td>varchar(20)</td></tr>
-                            <tr><td>head_doctor_id</td><td>int</td></tr>
+                            <tr><td>patientId</td><td>Định danh duy nhất của bệnh nhân</td></tr>
+                            <tr><td>fullName</td><td>Họ và tên người bệnh</td></tr>
+                            <tr><td>phone</td><td>Số điện thoại liên hệ cá nhân</td></tr>
+                            <tr><td>insuranceNo</td><td>Mã số trên thẻ Bảo hiểm y tế (nếu có)</td></tr>
+                            <tr><td>gender</td><td>Giới tính</td></tr>
+                            <tr><td>dob</td><td>Ngày tháng năm sinh</td></tr>
+                            <tr><td>address</td><td>Địa chỉ thường trú</td></tr>
+                            <tr><td>emergencyContact</td><td>Số điện thoại người thân để liên hệ khẩn cấp</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Bảng Rooms -->
+                <!-- Bảng MedicalVisit -->
                 <div class="table-schema">
-                    <h3 class="table-name">Rooms (Phòng)</h3>
+                    <h3 class="table-name">MedicalVisit (Lượt khám)</h3>
+                    <p class="table-description">Ghi nhận một phiên tiếp nhận và khám chữa bệnh của bệnh nhân.</p>
                     <table class="schema-table">
                         <thead>
                             <tr>
                                 <th>Tên cột</th>
-                                <th>Kiểu dữ liệu</th>
+                                <th>Mô tả</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>room_id</td><td>int</td></tr>
-                            <tr><td>room_number</td><td>varchar(20)</td></tr>
-                            <tr><td>room_type</td><td>nvarchar(50)</td></tr>
-                            <tr><td>department_id</td><td>int</td></tr>
-                            <tr><td>capacity</td><td>int</td></tr>
-                            <tr><td>status</td><td>nvarchar(50)</td></tr>
+                            <tr><td>visitId</td><td>Định danh duy nhất của lượt khám</td></tr>
+                            <tr><td>startTime</td><td>Thời gian bắt đầu tiếp nhận lượt khám tại viện</td></tr>
+                            <tr><td>endTime</td><td>Thời gian kết thúc quy trình khám bệnh</td></tr>
+                            <tr><td>symptoms</td><td>Mô tả các triệu chứng lâm sàng ban đầu do người bệnh cung cấp</td></tr>
+                            <tr><td>notes</td><td>Ghi chú thêm của bác sĩ trong quá trình khám định bệnh</td></tr>
+                            <tr><td>status</td><td>Trạng thái lượt khám (Đang chờ, Đang khám, Đã hoàn thành)</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Bảng Bills -->
+                <!-- Bảng VitalSign -->
                 <div class="table-schema">
-                    <h3 class="table-name">Bills (Hóa đơn)</h3>
+                    <h3 class="table-name">VitalSign (Sinh hiệu)</h3>
+                    <p class="table-description">Các chỉ số đo lường sinh lý cơ bản của bệnh nhân tại phòng khám trước khi gặp bác sĩ.</p>
                     <table class="schema-table">
                         <thead>
                             <tr>
                                 <th>Tên cột</th>
-                                <th>Kiểu dữ liệu</th>
+                                <th>Mô tả</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>bill_id</td><td>int</td></tr>
-                            <tr><td>patient_id</td><td>int</td></tr>
-                            <tr><td>appointment_id</td><td>int</td></tr>
-                            <tr><td>total_amount</td><td>decimal(10,2)</td></tr>
-                            <tr><td>paid_amount</td><td>decimal(10,2)</td></tr>
-                            <tr><td>payment_status</td><td>nvarchar(50)</td></tr>
-                            <tr><td>payment_date</td><td>datetime</td></tr>
-                            <tr><td>created_at</td><td>datetime</td></tr>
+                            <tr><td>vitalId</td><td>Định danh duy nhất của bản ghi sinh hiệu</td></tr>
+                            <tr><td>bloodPressure</td><td>Chỉ số huyết áp đo được</td></tr>
+                            <tr><td>heartRate</td><td>Chỉ số nhịp tim/mạch</td></tr>
+                            <tr><td>temperature</td><td>Nhiệt độ cơ thể</td></tr>
+                            <tr><td>respiratoryRate</td><td>Nhịp thở</td></tr>
+                            <tr><td>weight</td><td>Cân nặng hiện tại</td></tr>
+                            <tr><td>height</td><td>Chiều cao hiện tại</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Diagnosis -->
+                <div class="table-schema">
+                    <h3 class="table-name">Diagnosis (Chẩn đoán)</h3>
+                    <p class="table-description">Kết luận bệnh lý của bác sĩ dành cho bệnh nhân trong lượt khám.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>diagnosisId</td><td>Định danh duy nhất của bản ghi chẩn đoán</td></tr>
+                            <tr><td>diagType</td><td>Phân loại chẩn đoán (Chẩn đoán sơ bộ lúc nhập viện / Chẩn đoán xác định)</td></tr>
+                            <tr><td>diagnosedDate</td><td>Ngày giờ chính thức lập chẩn đoán</td></tr>
+                            <tr><td>notes</td><td>Diễn giải chi tiết tình trạng bệnh lý của bác sĩ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Icd10Dictionary -->
+                <div class="table-schema">
+                    <h3 class="table-name">Icd10Dictionary (Từ điển bệnh)</h3>
+                    <p class="table-description">Bộ từ điển lưu trữ chuẩn mã hóa bệnh tật quốc tế ICD-10.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>icd10Code</td><td>Mã bệnh chuẩn quốc tế</td></tr>
+                            <tr><td>diseaseName</td><td>Tên gọi chuẩn của bệnh lý theo quy chuẩn y tế</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng TechnicalService -->
+                <div class="table-schema">
+                    <h3 class="table-name">TechnicalService (Dịch vụ kỹ thuật)</h3>
+                    <p class="table-description">Danh mục các loại hình dịch vụ xét nghiệm, chẩn đoán hình ảnh đang cung cấp tại bệnh viện.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>serviceCode</td><td>Mã dịch vụ y tế nội bộ</td></tr>
+                            <tr><td>serviceName</td><td>Tên gọi của dịch vụ cận lâm sàng (Siêu âm ổ bụng, Xét nghiệm máu...)</td></tr>
+                            <tr><td>description</td><td>Mô tả tóm tắt quy trình thực hiện dịch vụ</td></tr>
+                            <tr><td>durationEst</td><td>Thời gian ước tính để hoàn thành và có kết quả dịch vụ</td></tr>
+                            <tr><td>unitPrice</td><td>Đơn giá thu phí đối với dịch vụ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng ServiceOrder -->
+                <div class="table-schema">
+                    <h3 class="table-name">ServiceOrder (Phiếu chỉ định)</h3>
+                    <p class="table-description">Yêu cầu thực hiện dịch vụ cận lâm sàng do bác sĩ lâm sàng lập và gửi đi.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>orderId</td><td>Định danh duy nhất của phiếu chỉ định</td></tr>
+                            <tr><td>orderTime</td><td>Thời gian hệ thống ghi nhận việc bác sĩ lập phiếu</td></tr>
+                            <tr><td>doctorNotes</td><td>Ghi chú, yêu cầu đặc biệt của bác sĩ gửi xuống bộ phận phòng xét nghiệm</td></tr>
+                            <tr><td>status</td><td>Trạng thái phiếu chỉ định (Chờ thực hiện, Đang thực hiện, Đã có kết quả)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng LabResult -->
+                <div class="table-schema">
+                    <h3 class="table-name">LabResult (Kết quả xét nghiệm)</h3>
+                    <p class="table-description">Chi tiết các chỉ số đo lường được trả về từ các máy xét nghiệm ở phòng Lab.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>resultId</td><td>Định danh duy nhất của dòng kết quả</td></tr>
+                            <tr><td>indexName</td><td>Tên của chỉ số sinh hóa được xét nghiệm (Glucose, Hồng cầu, Bạch cầu...)</td></tr>
+                            <tr><td>value</td><td>Giá trị kết quả thực tế đo lường được từ bệnh nhân</td></tr>
+                            <tr><td>unit</td><td>Đơn vị đo lường tương ứng của chỉ số</td></tr>
+                            <tr><td>referenceRange</td><td>Khoảng giá trị sinh lý bình thường dùng để tham chiếu, đối chiếu kết quả</td></tr>
+                            <tr><td>resultTime</td><td>Thời gian hệ thống ghi nhận có kết quả trả về</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Medicine -->
+                <div class="table-schema">
+                    <h3 class="table-name">Medicine (Danh mục Thuốc)</h3>
+                    <p class="table-description">Quản lý thông tin chi tiết các loại dược phẩm, vật tư y tế.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>medicineId</td><td>Mã định danh duy nhất của thuốc</td></tr>
+                            <tr><td>medicineName</td><td>Tên thương mại (biệt dược) của thuốc</td></tr>
+                            <tr><td>activeIngredient</td><td>Tên hoạt chất chính tạo nên thành phần thuốc</td></tr>
+                            <tr><td>unit</td><td>Đơn vị tính cơ bản (Viên, Lọ, Tuýp, Hộp...)</td></tr>
+                            <tr><td>manufacturer</td><td>Tên nhà sản xuất dược phẩm</td></tr>
+                            <tr><td>sellPrice</td><td>Giá bán ra quy định cho bệnh nhân</td></tr>
+                            <tr><td>minStock</td><td>Ngưỡng số lượng tồn kho tối thiểu để hệ thống bật cảnh báo nhập thêm hàng</td></tr>
+                            <tr><td>note</td><td>Ghi chú về điều kiện bảo quản hoặc lưu ý đặc biệt</td></tr>
+                            <tr><td>status</td><td>Trạng thái kinh doanh (Đang lưu hành, Ngừng kinh doanh...)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Warehouse -->
+                <div class="table-schema">
+                    <h3 class="table-name">Warehouse (Kho)</h3>
+                    <p class="table-description">Danh sách các kho chứa và bảo quản vật tư, dược phẩm trong bệnh viện.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>warehouseId</td><td>Mã định danh duy nhất của kho</td></tr>
+                            <tr><td>warehouseName</td><td>Tên gọi của kho (Kho chẵn, Kho lẻ, Kho nội trú...)</td></tr>
+                            <tr><td>warehouseType</td><td>Phân loại kho (Kho thuốc, Kho vật tư y tế, Kho hóa chất...)</td></tr>
+                            <tr><td>address</td><td>Vị trí phòng ban lưu trữ kho vật tư</td></tr>
+                            <tr><td>status</td><td>Trạng thái hoạt động của kho (Đang sử dụng, Tạm đóng, Ngừng hoạt động...)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Prescription -->
+                <div class="table-schema">
+                    <h3 class="table-name">Prescription (Đơn thuốc)</h3>
+                    <p class="table-description">Lưu trữ thông tin tổng quát của một đơn thuốc do bác sĩ kê cho bệnh nhân.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>prescriptionId</td><td>Định danh duy nhất của đơn thuốc</td></tr>
+                            <tr><td>date</td><td>Ngày giờ lập đơn thuốc</td></tr>
+                            <tr><td>diagnosis</td><td>Thông tin chẩn đoán gắn liền với đơn thuốc này</td></tr>
+                            <tr><td>note</td><td>Lời dặn dò chung của bác sĩ về toàn bộ đơn thuốc</td></tr>
+                            <tr><td>status</td><td>Trạng thái cấp phát thuốc (Chưa xuất thuốc, Đã xuất thuốc, Đã hủy...)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng GoodsReceipt -->
+                <div class="table-schema">
+                    <h3 class="table-name">GoodsReceipt (Phiếu nhập kho)</h3>
+                    <p class="table-description">Biên bản ghi nhận việc nhập hàng hóa, dược phẩm từ nhà cung cấp vào kho.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>receiptId</td><td>Mã phiếu nhập kho</td></tr>
+                            <tr><td>date</td><td>Ngày giờ chính thức lập biên bản nhập kho</td></tr>
+                            <tr><td>supplierName</td><td>Tên nhà cung cấp, đơn vị phân phối dược phẩm</td></tr>
+                            <tr><td>totalValue</td><td>Tổng giá trị tiền hàng hóa nhập vào</td></tr>
+                            <tr><td>batchNo</td><td>Số hiệu lô hàng của đợt nhập</td></tr>
+                            <tr><td>status</td><td>Trạng thái phiếu nhập (Khởi tạo, Chờ duyệt, Đã nhập kho)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng GoodsIssue -->
+                <div class="table-schema">
+                    <h3 class="table-name">GoodsIssue (Phiếu xuất kho)</h3>
+                    <p class="table-description">Biên bản ghi nhận việc xuất hàng hóa từ kho đi các nơi khác hoặc cấp phát cho bệnh nhân.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>issueId</td><td>Mã phiếu xuất kho</td></tr>
+                            <tr><td>date</td><td>Ngày giờ thực hiện xuất kho</td></tr>
+                            <tr><td>batchNo</td><td>Số hiệu lô hàng được xuất đi</td></tr>
+                            <tr><td>reason</td><td>Mục đích xuất kho (Xuất cho bệnh nhân ngoại trú, Xuất hủy hàng hết hạn, Xuất luân chuyển kho)</td></tr>
+                            <tr><td>status</td><td>Trạng thái chứng từ (Đang lấy hàng, Đã xuất kho...)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng Invoice -->
+                <div class="table-schema">
+                    <h3 class="table-name">Invoice (Hóa đơn)</h3>
+                    <p class="table-description">Hóa đơn tổng hợp chi phí toàn bộ dịch vụ, thuốc men của bệnh nhân trong một lượt khám.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>invoiceId</td><td>Mã hóa đơn duy nhất</td></tr>
+                            <tr><td>createdDate</td><td>Ngày giờ lập hóa đơn thanh toán trên hệ thống</td></tr>
+                            <tr><td>paymentMethod</td><td>Phương thức bệnh nhân chọn để thanh toán (Tiền mặt, Thẻ tín dụng, Chuyển khoản...)</td></tr>
+                            <tr><td>totalAmount</td><td>Tổng số tiền gốc của tất cả các dịch vụ và thuốc đã sử dụng</td></tr>
+                            <tr><td>insuranceAmount</td><td>Số tiền được Bảo hiểm y tế bảo lãnh và hỗ trợ chi trả thay</td></tr>
+                            <tr><td>finalAmount</td><td>Số tiền thực tế cuối cùng mà người bệnh phải nộp</td></tr>
+                            <tr><td>status</td><td>Trạng thái thu phí (Chưa thu tiền, Đã thanh toán, Đã hủy)</td></tr>
                         </tbody>
                     </table>
                 </div>

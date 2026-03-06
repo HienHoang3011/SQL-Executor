@@ -27,7 +27,7 @@
     --border-radius: 8px;
     --spacing-unit: 8px;
     
-    --left-panel-width: 450px;
+    --left-panel-width: 650px;
 }
 
 body {
@@ -143,6 +143,16 @@ body {
     margin: 0;
 }
 
+.table-description {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background-color: #f8fafc;
+    margin: 0;
+    border-bottom: 1px solid var(--border-color);
+    font-style: italic;
+}
+
 .schema-table {
     width: 100%;
     border-collapse: collapse;
@@ -179,9 +189,9 @@ body {
 }
 
 .schema-table tbody td:last-child {
-    color: var(--text-secondary);
-    font-family: 'Courier New', monospace;
-    font-size: 0.8rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.85rem;
 }
 
 /* ===== Right Panel: SQL Executor ===== */
