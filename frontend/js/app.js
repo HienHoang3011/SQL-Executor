@@ -3,11 +3,149 @@
  * Xử lý giao diện và giao tiếp với Backend API
  */
 
+// ===== Sample Queries Data =====
+const SAMPLE_QUERIES = {
+    basic: [
+        {
+            title: 'Danh sách Khoa/Phòng',
+            desc: 'SELECT * FROM Department',
+            sql: 'SELECT * FROM Department ORDER BY deptName'
+        },
+        {
+            title: 'Danh sách Nhân viên',
+            desc: 'SELECT TOP 20 * FROM Staff',
+            sql: 'SELECT TOP 20 * FROM Staff ORDER BY fullName'
+        },
+        {
+            title: 'Danh sách Bệnh nhân',
+            desc: 'SELECT TOP 20 * FROM Patient',
+            sql: 'SELECT TOP 20 * FROM Patient ORDER BY fullName'
+        },
+        {
+            title: 'Tài khoản hệ thống',
+            desc: 'SELECT * FROM UserAccount',
+            sql: 'SELECT accountId, username, createdAt, isActive FROM UserAccount ORDER BY createdAt DESC'
+        },
+        {
+            title: 'Vai trò & Quyền hạn',
+            desc: 'SELECT * FROM Role',
+            sql: 'SELECT * FROM Role ORDER BY roleName'
+        }
+    ],
+    clinical: [
+        {
+            title: 'Lượt khám gần đây',
+            desc: 'SELECT TOP 20 * FROM MedicalVisit',
+            sql: 'SELECT TOP 20 * FROM MedicalVisit ORDER BY startTime DESC'
+        },
+        {
+            title: 'Sinh hiệu bệnh nhân',
+            desc: 'SELECT TOP 20 * FROM VitalSign',
+            sql: 'SELECT TOP 20 * FROM VitalSign'
+        },
+        {
+            title: 'Chẩn đoán',
+            desc: 'SELECT TOP 20 * FROM Diagnosis',
+            sql: 'SELECT TOP 20 * FROM Diagnosis ORDER BY diagnosedDate DESC'
+        },
+        {
+            title: 'Dịch vụ kỹ thuật',
+            desc: 'SELECT * FROM TechnicalService',
+            sql: 'SELECT * FROM TechnicalService ORDER BY serviceName'
+        },
+        {
+            title: 'Phiếu chỉ định xét nghiệm',
+            desc: 'SELECT TOP 20 * FROM ServiceOrder',
+            sql: 'SELECT TOP 20 * FROM ServiceOrder ORDER BY orderTime DESC'
+        },
+        {
+            title: 'Kết quả xét nghiệm',
+            desc: 'SELECT TOP 30 * FROM LabResult',
+            sql: 'SELECT TOP 30 * FROM LabResult ORDER BY resultTime DESC'
+        }
+    ],
+    pharmacy: [
+        {
+            title: 'Danh mục Thuốc',
+            desc: 'SELECT TOP 20 * FROM Medicine',
+            sql: 'SELECT TOP 20 * FROM Medicine ORDER BY medicineName'
+        },
+        {
+            title: 'Danh sách Kho',
+            desc: 'SELECT * FROM Warehouse',
+            sql: 'SELECT * FROM Warehouse ORDER BY warehouseName'
+        },
+        {
+            title: 'Đơn thuốc',
+            desc: 'SELECT TOP 20 * FROM Prescription',
+            sql: 'SELECT TOP 20 * FROM Prescription ORDER BY date DESC'
+        },
+        {
+            title: 'Phiếu nhập kho',
+            desc: 'SELECT TOP 20 * FROM GoodsReceipt',
+            sql: 'SELECT TOP 20 * FROM GoodsReceipt ORDER BY date DESC'
+        },
+        {
+            title: 'Phiếu xuất kho',
+            desc: 'SELECT TOP 20 * FROM GoodsIssue',
+            sql: 'SELECT TOP 20 * FROM GoodsIssue ORDER BY date DESC'
+        }
+    ],
+    finance: [
+        {
+            title: 'Hóa đơn thanh toán',
+            desc: 'SELECT TOP 20 * FROM Invoice',
+            sql: 'SELECT TOP 20 * FROM Invoice ORDER BY createdDate DESC'
+        },
+        {
+            title: 'Hóa đơn chưa thanh toán',
+            desc: 'SELECT ... WHERE status = \'Chưa thu tiền\'',
+            sql: "SELECT TOP 20 * FROM Invoice WHERE status = N'Chưa thu tiền' ORDER BY createdDate DESC"
+        },
+        {
+            title: 'Doanh thu theo phương thức',
+            desc: 'GROUP BY paymentMethod',
+            sql: 'SELECT paymentMethod, COUNT(*) AS soHoaDon, SUM(finalAmount) AS tongThu\nFROM Invoice\nWHERE status = N\'Đã thanh toán\'\nGROUP BY paymentMethod\nORDER BY tongThu DESC'
+        }
+    ],
+    joins: [
+        {
+            title: 'Nhân viên & Khoa',
+            desc: 'Staff JOIN Department',
+            sql: 'SELECT TOP 20\n    s.staffId, s.fullName, s.specialty, s.gender,\n    d.deptName, d.deptType\nFROM Staff s\nJOIN Department d ON s.deptId = d.deptId\nORDER BY d.deptName, s.fullName'
+        },
+        {
+            title: 'Bệnh nhân & Lượt khám',
+            desc: 'Patient JOIN MedicalVisit',
+            sql: 'SELECT TOP 20\n    p.patientId, p.fullName, p.gender,\n    mv.visitId, mv.startTime, mv.status, mv.symptoms\nFROM Patient p\nJOIN MedicalVisit mv ON p.patientId = mv.patientId\nORDER BY mv.startTime DESC'
+        },
+        {
+            title: 'Lượt khám & Chẩn đoán',
+            desc: 'MedicalVisit JOIN Diagnosis',
+            sql: 'SELECT TOP 20\n    mv.visitId, mv.startTime, mv.status,\n    dg.diagType, dg.diagnosedDate, dg.notes\nFROM MedicalVisit mv\nJOIN Diagnosis dg ON mv.visitId = dg.visitId\nORDER BY dg.diagnosedDate DESC'
+        },
+        {
+            title: 'Phiếu chỉ định & Kết quả',
+            desc: 'ServiceOrder JOIN LabResult',
+            sql: 'SELECT TOP 20\n    so.orderId, so.orderTime, so.status AS orderStatus,\n    ts.serviceName,\n    lr.indexName, lr.value, lr.unit, lr.referenceRange\nFROM ServiceOrder so\nJOIN TechnicalService ts ON so.serviceCode = ts.serviceCode\nJOIN LabResult lr ON so.orderId = lr.orderId\nORDER BY so.orderTime DESC'
+        },
+        {
+            title: 'Đơn thuốc & Chi tiết thuốc',
+            desc: 'Prescription JOIN Medicine',
+            sql: 'SELECT TOP 20\n    pr.prescriptionId, pr.date, pr.status AS prescStatus,\n    m.medicineName, m.activeIngredient, m.unit\nFROM Prescription pr\nJOIN PrescriptionDetail pd ON pr.prescriptionId = pd.prescriptionId\nJOIN Medicine m ON pd.medicineId = m.medicineId\nORDER BY pr.date DESC'
+        },
+        {
+            title: 'Hóa đơn & Bệnh nhân',
+            desc: 'Invoice JOIN Patient via MedicalVisit',
+            sql: 'SELECT TOP 20\n    inv.invoiceId, inv.createdDate, inv.paymentMethod,\n    inv.totalAmount, inv.insuranceAmount, inv.finalAmount, inv.status,\n    p.fullName AS benhNhan\nFROM Invoice inv\nJOIN MedicalVisit mv ON inv.visitId = mv.visitId\nJOIN Patient p ON mv.patientId = p.patientId\nORDER BY inv.createdDate DESC'
+        }
+    ]
+};
+
 // ===== Configuration =====
 const CONFIG = {
-    // Cấu hình URL của Backend API
-    // Thay đổi URL này theo đúng địa chỉ backend của bạn
-    API_URL: 'http://localhost:3000/api/query',
+    // URL FastAPI backend (chạy qua Docker: http://localhost:8000)
+    API_URL: 'http://localhost:8000/api/query',
     
     // Timeout cho request (ms)
     REQUEST_TIMEOUT: 30000,
@@ -42,9 +180,54 @@ document.addEventListener('DOMContentLoaded', () => {
             handleExecuteQuery();
         }
     });
+
+    // Sample queries: render default tab
+    renderSampleQueries('basic');
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderSampleQueries(btn.dataset.tab);
+        });
+    });
     
     console.log('SQL Query Executor initialized');
 });
+
+// ===== Sample Queries Functions =====
+
+/**
+ * Render sample query cards vào grid
+ * @param {string} tab - Key trong SAMPLE_QUERIES
+ */
+function renderSampleQueries(tab) {
+    const grid = document.getElementById('samplesGrid');
+    const queries = SAMPLE_QUERIES[tab] || [];
+    
+    grid.innerHTML = queries.map((q, i) => `
+        <button class="sample-card" onclick="loadSample('${tab}', ${i})">
+            <span class="sample-card-title">${escapeHtml(q.title)}</span>
+            <span class="sample-card-desc">${escapeHtml(q.desc)}</span>
+        </button>
+    `).join('');
+}
+
+/**
+ * Tải câu lệnh mẫu vào textarea
+ * @param {string} tab
+ * @param {number} index
+ */
+function loadSample(tab, index) {
+    const q = SAMPLE_QUERIES[tab]?.[index];
+    if (!q) return;
+    elements.sqlQuery.value = q.sql;
+    elements.sqlQuery.focus();
+    hideError();
+    // Scroll đến textarea
+    elements.sqlQuery.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
 // ===== Main Functions =====
 
@@ -107,13 +290,25 @@ function validateQuery(query) {
     if (!query) {
         return 'Vui lòng nhập câu lệnh SQL';
     }
-    
+
     // Kiểm tra độ dài tối thiểu
     if (query.length < 6) {
         return 'Câu lệnh SQL quá ngắn';
     }
-    
-    // Backend sẽ xử lý việc kiểm tra SELECT và các keyword nguy hiểm
+
+    // Loại bỏ comments để tránh bị bypass  /* ... */  và  -- ...
+    const stripped = query
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/--[^\n]*/g, '')
+        .trim();
+
+    // Lấy từ đầu tiên
+    const firstWord = (stripped.split(/\s+/)[0] || '').toUpperCase();
+
+    if (firstWord !== 'SELECT') {
+        return `Chỉ cho phép câu lệnh SELECT.\n"${firstWord}" không được phép thực thi.`;
+    }
+
     return null; // Validation passed
 }
 

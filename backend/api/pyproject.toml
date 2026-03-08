@@ -1,0 +1,12 @@
+[project]
+name = "api"
+version = "0.1.0"
+description = "SQL Executor - FastAPI backend cho Hospital_Integrated_DB"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.5",
+    "uvicorn[standard]>=0.34.0",
+    "pymssql>=2.3.1",
+    "pydantic>=2.10.3",
+]

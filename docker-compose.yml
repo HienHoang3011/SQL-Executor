@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  # ── SQL Server ──────────────────────────────────────────────────────────────
+  sqlserver:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    platform: linux/amd64          # SQL Server chỉ có bản amd64 → chạy qua Rosetta trên Apple Silicon
+    container_name: hospital_sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      SA_PASSWORD: "YourStrong!Passw0rd"   # ← change in production
+    ports:
+      - "1433:1433"                         # host:container
+    volumes:
+      - sqlserver_data:/var/opt/mssql       # persist database files
+    healthcheck:
+      # Verify the DB is reachable after startup
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$SA_PASSWORD\" -Q \"SELECT 1\" -C -b"
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 15
+      start_period: 90s            # Tăng lên vì emulation amd64 trên arm64 khởi động chậm
+    restart: unless-stopped
+
+  # ── FastAPI Backend ──────────────────────────────────────────────────────────
+  api:
+    build:
+      context: ./backend/api
+      dockerfile: Dockerfile
+    container_name: hospital_api
+    environment:
+      DB_HOST: sqlserver
+      DB_PORT: "1433"
+      DB_USER: sa
+      DB_PASSWORD: "YourStrong!Passw0rd"   # ← phải khớp với SA_PASSWORD ở trên
+      DB_NAME: Hospital_Integrated_DB
+    ports:
+      - "8000:8000"                         # FastAPI → http://localhost:8000
+    depends_on:
+      sqlserver:
+        condition: service_healthy           # Chờ SQL Server sẵn sàng
+    restart: unless-stopped
+
+volumes:
+  sqlserver_data:
+    driver: local
