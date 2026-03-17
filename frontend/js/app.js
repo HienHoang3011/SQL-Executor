@@ -157,6 +157,7 @@ const CONFIG = {
 // ===== DOM Elements =====
 const elements = {
     sqlQuery: document.getElementById('sqlQuery'),
+    sqlEditor: null, // Sẽ chứa CodeMirror instance
     executeBtn: document.getElementById('executeBtn'),
     clearBtn: document.getElementById('clearBtn'),
     resultsContainer: document.getElementById('resultsContainer'),
@@ -167,19 +168,25 @@ const elements = {
 
 // ===== Event Listeners =====
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize CodeMirror
+    elements.sqlEditor = CodeMirror.fromTextArea(elements.sqlQuery, {
+        mode: 'text/x-sql',
+        theme: 'default',
+        lineNumbers: true,
+        matchBrackets: true,
+        indentUnit: 4,
+        extraKeys: {
+            "Ctrl-Enter": function(cm) {
+                handleExecuteQuery();
+            }
+        }
+    });
+
     // Execute button click
     elements.executeBtn.addEventListener('click', handleExecuteQuery);
     
     // Clear button click
     elements.clearBtn.addEventListener('click', handleClearQuery);
-    
-    // Enter key trong textarea (Ctrl+Enter để execute)
-    elements.sqlQuery.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key === 'Enter') {
-            e.preventDefault();
-            handleExecuteQuery();
-        }
-    });
 
     // Sample queries: render default tab
     renderSampleQueries('basic');
@@ -222,11 +229,11 @@ function renderSampleQueries(tab) {
 function loadSample(tab, index) {
     const q = SAMPLE_QUERIES[tab]?.[index];
     if (!q) return;
-    elements.sqlQuery.value = q.sql;
-    elements.sqlQuery.focus();
+    elements.sqlEditor.setValue(q.sql);
+    elements.sqlEditor.focus();
     hideError();
-    // Scroll đến textarea
-    elements.sqlQuery.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Scroll đến editor
+    elements.sqlEditor.getWrapperElement().scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // ===== Main Functions =====
@@ -236,8 +243,8 @@ function loadSample(tab, index) {
  */
 async function handleExecuteQuery() {
     try {
-        // Lấy giá trị SQL từ textarea
-        const sqlQuery = elements.sqlQuery.value.trim();
+        // Lấy giá trị SQL từ editor thay vì textarea
+        const sqlQuery = elements.sqlEditor.getValue().trim();
         
         // Validate input
         const validationError = validateQuery(sqlQuery);
@@ -267,7 +274,7 @@ async function handleExecuteQuery() {
  * Xử lý khi người dùng nhấn Clear
  */
 function handleClearQuery() {
-    elements.sqlQuery.value = '';
+    elements.sqlEditor.setValue('');
     elements.resultsContainer.innerHTML = `
         <div class="empty-state">
             <p>Kết quả sẽ hiển thị ở đây sau khi bạn thực thi câu lệnh SQL</p>
@@ -275,7 +282,7 @@ function handleClearQuery() {
     `;
     elements.resultCount.textContent = '';
     hideError();
-    elements.sqlQuery.focus();
+    elements.sqlEditor.focus();
 }
 
 // ===== Validation Functions =====

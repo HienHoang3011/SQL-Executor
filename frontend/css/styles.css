@@ -262,28 +262,36 @@ section {
 }
 
 /* ===== Query Section ===== */
+/* Ẩn textarea gốc vì đã thay bằng CodeMirror */
 #sqlQuery {
-    width: 100%;
-    padding: 14px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px;
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
-    resize: vertical;
-    min-height: 120px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: #f8fafc;
+    display: none;
 }
 
-#sqlQuery:focus {
-    outline: none;
+/* ===== CodeMirror Styles ===== */
+.CodeMirror {
+    height: auto;
+    min-height: 120px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    background-color: #f8fafc;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    padding: 4px;
+}
+
+.CodeMirror-focused {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     background-color: white;
 }
 
-#sqlQuery::placeholder {
-    color: var(--text-secondary);
+.CodeMirror-scroll {
+    min-height: 110px;
+}
+
+.CodeMirror-lines {
+    padding: 10px 0;
 }
 
 /* ===== Buttons ===== */

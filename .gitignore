@@ -53,4 +53,5 @@ coverage/
 # yarn.lock
 
 # User-specific configuration
-config.local.js
+config.local.js  
+__pycache__
