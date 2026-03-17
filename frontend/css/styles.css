@@ -294,6 +294,31 @@ section {
     padding: 10px 0;
 }
 
+/* Custom SQL Syntax Highlighting Colors */
+.cm-s-default .cm-keyword {
+    font-weight: bold;
+}
+
+.cm-s-default .cm-operator {
+    color: #808080; /* Gray for operators like = */
+}
+
+.cm-s-default .cm-string {
+    color: #a31515; /* Dark red for strings (like SSMS) */
+}
+
+.cm-s-default .cm-number {
+    color: #098658; /* Green for numbers */
+}
+
+.cm-s-default .cm-builtin {
+    color: #ff00ff; /* Magenta for built-in functions */
+}
+
+.cm-s-default .cm-comment {
+    color: #008000; /* Green for comments */
+}
+
 /* ===== Buttons ===== */
 .action-buttons {
     display: flex;

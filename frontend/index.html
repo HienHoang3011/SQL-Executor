@@ -60,6 +60,7 @@
                         </thead>
                         <tbody>
                             <tr><td>staffId</td><td>Định danh duy nhất của nhân sự</td></tr>
+                            <tr><td>deptId</td><td>Khoa/Phòng trực thuộc (Khóa ngoại tham chiếu đến bảng Department)</td></tr>
                             <tr><td>fullName</td><td>Họ và tên đầy đủ của nhân viên y tế</td></tr>
                             <tr><td>specialty</td><td>Chuyên khoa hoặc nghiệp vụ chuyên môn (Tim mạch, Kế toán...)</td></tr>
                             <tr><td>gender</td><td>Giới tính</td></tr>
@@ -83,6 +84,8 @@
                         </thead>
                         <tbody>
                             <tr><td>accountId</td><td>Định danh duy nhất của tài khoản</td></tr>
+                            <tr><td>staffId</td><td>Mã nhân viên sở hữu tài khoản (Khóa ngoại tham chiếu đến bảng Staff)</td></tr>
+                            <tr><td>roleId</td><td>Vai trò của tài khoản (Khóa ngoại tham chiếu đến bảng Role)</td></tr>
                             <tr><td>username</td><td>Tên đăng nhập vào hệ thống phần mềm</td></tr>
                             <tr><td>password</td><td>Chuỗi mật khẩu đã được mã hóa an toàn</td></tr>
                             <tr><td>createdAt</td><td>Thời điểm tài khoản được tạo mới</td></tr>
@@ -106,6 +109,24 @@
                             <tr><td>roleId</td><td>Định danh duy nhất của vai trò</td></tr>
                             <tr><td>roleName</td><td>Tên gọi của vai trò (Bác sĩ, Lễ tân, Quản trị viên...)</td></tr>
                             <tr><td>description</td><td>Mô tả chi tiết chức năng, nhiệm vụ của vai trò</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng RolePermission -->
+                <div class="table-schema">
+                    <h3 class="table-name">RolePermission (Phân quyền)</h3>
+                    <p class="table-description">Bảng trung gian thiết lập quyền hạn cho từng vai trò.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>roleId</td><td>Mã vai trò (Khóa ngoại tham chiếu đến bảng Role)</td></tr>
+                            <tr><td>permissionId</td><td>Mã quyền hạn được cấp (Khóa ngoại tham chiếu đến bảng Permission)</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -166,6 +187,9 @@
                         </thead>
                         <tbody>
                             <tr><td>visitId</td><td>Định danh duy nhất của lượt khám</td></tr>
+                            <tr><td>patientId</td><td>Bệnh nhân đến khám (Khóa ngoại tham chiếu đến bảng Patient)</td></tr>
+                            <tr><td>doctorAccountId</td><td>Bác sĩ phụ trách khám (Khóa ngoại tham chiếu đến bảng UserAccount)</td></tr>
+                            <tr><td>deptId</td><td>Khoa tiếp nhận (Khóa ngoại tham chiếu đến bảng Department)</td></tr>
                             <tr><td>startTime</td><td>Thời gian bắt đầu tiếp nhận lượt khám tại viện</td></tr>
                             <tr><td>endTime</td><td>Thời gian kết thúc quy trình khám bệnh</td></tr>
                             <tr><td>symptoms</td><td>Mô tả các triệu chứng lâm sàng ban đầu do người bệnh cung cấp</td></tr>
@@ -188,6 +212,7 @@
                         </thead>
                         <tbody>
                             <tr><td>vitalId</td><td>Định danh duy nhất của bản ghi sinh hiệu</td></tr>
+                            <tr><td>visitId</td><td>Lượt khám tương ứng (Khóa ngoại tham chiếu đến bảng MedicalVisit)</td></tr>
                             <tr><td>bloodPressure</td><td>Chỉ số huyết áp đo được</td></tr>
                             <tr><td>heartRate</td><td>Chỉ số nhịp tim/mạch</td></tr>
                             <tr><td>temperature</td><td>Nhiệt độ cơ thể</td></tr>
@@ -211,6 +236,8 @@
                         </thead>
                         <tbody>
                             <tr><td>diagnosisId</td><td>Định danh duy nhất của bản ghi chẩn đoán</td></tr>
+                            <tr><td>visitId</td><td>Lượt khám tương ứng (Khóa ngoại tham chiếu đến bảng MedicalVisit)</td></tr>
+                            <tr><td>icd10Code</td><td>Mã ICD-10 của bệnh (Khóa ngoại tham chiếu đến bảng Icd10Dictionary)</td></tr>
                             <tr><td>diagType</td><td>Phân loại chẩn đoán (Chẩn đoán sơ bộ lúc nhập viện / Chẩn đoán xác định)</td></tr>
                             <tr><td>diagnosedDate</td><td>Ngày giờ chính thức lập chẩn đoán</td></tr>
                             <tr><td>notes</td><td>Diễn giải chi tiết tình trạng bệnh lý của bác sĩ</td></tr>
@@ -270,6 +297,8 @@
                         </thead>
                         <tbody>
                             <tr><td>orderId</td><td>Định danh duy nhất của phiếu chỉ định</td></tr>
+                            <tr><td>visitId</td><td>Lượt khám yêu cầu (Khóa ngoại tham chiếu đến bảng MedicalVisit)</td></tr>
+                            <tr><td>serviceCode</td><td>Mã dịch vụ kỹ thuật (Khóa ngoại tham chiếu đến bảng TechnicalService)</td></tr>
                             <tr><td>orderTime</td><td>Thời gian hệ thống ghi nhận việc bác sĩ lập phiếu</td></tr>
                             <tr><td>doctorNotes</td><td>Ghi chú, yêu cầu đặc biệt của bác sĩ gửi xuống bộ phận phòng xét nghiệm</td></tr>
                             <tr><td>status</td><td>Trạng thái phiếu chỉ định (Chờ thực hiện, Đang thực hiện, Đã có kết quả)</td></tr>
@@ -290,6 +319,9 @@
                         </thead>
                         <tbody>
                             <tr><td>resultId</td><td>Định danh duy nhất của dòng kết quả</td></tr>
+                            <tr><td>orderId</td><td>Phiếu chỉ định tương ứng (Khóa ngoại tham chiếu đến bảng ServiceOrder)</td></tr>
+                            <tr><td>performedByAccountId</td><td>Người thực hiện xét nghiệm (Khóa ngoại tham chiếu đến bảng UserAccount)</td></tr>
+                            <tr><td>approvedByAccountId</td><td>Người duyệt kết quả (Khóa ngoại tham chiếu đến bảng UserAccount)</td></tr>
                             <tr><td>indexName</td><td>Tên của chỉ số sinh hóa được xét nghiệm (Glucose, Hồng cầu, Bạch cầu...)</td></tr>
                             <tr><td>value</td><td>Giá trị kết quả thực tế đo lường được từ bệnh nhân</td></tr>
                             <tr><td>unit</td><td>Đơn vị đo lường tương ứng của chỉ số</td></tr>
@@ -337,10 +369,9 @@
                         </thead>
                         <tbody>
                             <tr><td>warehouseId</td><td>Mã định danh duy nhất của kho</td></tr>
+                            <tr><td>managerAccountId</td><td>Tài khoản người quản lý kho (Khóa ngoại tham chiếu đến bảng UserAccount)</td></tr>
                             <tr><td>warehouseName</td><td>Tên gọi của kho (Kho chẵn, Kho lẻ, Kho nội trú...)</td></tr>
-                            <tr><td>warehouseType</td><td>Phân loại kho (Kho thuốc, Kho vật tư y tế, Kho hóa chất...)</td></tr>
-                            <tr><td>address</td><td>Vị trí phòng ban lưu trữ kho vật tư</td></tr>
-                            <tr><td>status</td><td>Trạng thái hoạt động của kho (Đang sử dụng, Tạm đóng, Ngừng hoạt động...)</td></tr>
+                            <tr><td>location</td><td>Vị trí phòng ban lưu trữ kho vật tư</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -358,10 +389,33 @@
                         </thead>
                         <tbody>
                             <tr><td>prescriptionId</td><td>Định danh duy nhất của đơn thuốc</td></tr>
-                            <tr><td>date</td><td>Ngày giờ lập đơn thuốc</td></tr>
-                            <tr><td>diagnosis</td><td>Thông tin chẩn đoán gắn liền với đơn thuốc này</td></tr>
-                            <tr><td>note</td><td>Lời dặn dò chung của bác sĩ về toàn bộ đơn thuốc</td></tr>
+                            <tr><td>visitId</td><td>Lượt khám tương ứng (Khóa ngoại tham chiếu đến bảng MedicalVisit)</td></tr>
+                            <tr><td>doctorAccountId</td><td>Bác sĩ kê đơn (Khóa ngoại tham chiếu đến bảng UserAccount)</td></tr>
+                            <tr><td>prescribedDate</td><td>Ngày giờ lập đơn thuốc</td></tr>
+                            <tr><td>doctorNotes</td><td>Lời dặn dò chung của bác sĩ về toàn bộ đơn thuốc</td></tr>
                             <tr><td>status</td><td>Trạng thái cấp phát thuốc (Chưa xuất thuốc, Đã xuất thuốc, Đã hủy...)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng PrescriptionDetail -->
+                <div class="table-schema">
+                    <h3 class="table-name">PrescriptionDetail (Chi tiết đơn thuốc)</h3>
+                    <p class="table-description">Các loại thuốc cụ thể được kê trong một đơn thuốc.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>prescriptionDetailId</td><td>Định danh chi tiết đơn</td></tr>
+                            <tr><td>prescriptionId</td><td>Thuộc đơn thuốc nào (Khóa ngoại tham chiếu đến bảng Prescription)</td></tr>
+                            <tr><td>medicineId</td><td>Thuốc được kê (Khóa ngoại tham chiếu đến bảng Medicine)</td></tr>
+                            <tr><td>dosage</td><td>Liều dùng dặn dò</td></tr>
+                            <tr><td>quantity</td><td>Số lượng cấp phát</td></tr>
+                            <tr><td>durationDays</td><td>Số ngày uống dự kiến</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -379,11 +433,34 @@
                         </thead>
                         <tbody>
                             <tr><td>receiptId</td><td>Mã phiếu nhập kho</td></tr>
-                            <tr><td>date</td><td>Ngày giờ chính thức lập biên bản nhập kho</td></tr>
+                            <tr><td>warehouseId</td><td>Nhập vào kho nào (Khóa ngoại tham chiếu đến bảng Warehouse)</td></tr>
+                            <tr><td>receiptDate</td><td>Ngày giờ chính thức lập biên bản nhập kho</td></tr>
                             <tr><td>supplierName</td><td>Tên nhà cung cấp, đơn vị phân phối dược phẩm</td></tr>
                             <tr><td>totalValue</td><td>Tổng giá trị tiền hàng hóa nhập vào</td></tr>
-                            <tr><td>batchNo</td><td>Số hiệu lô hàng của đợt nhập</td></tr>
                             <tr><td>status</td><td>Trạng thái phiếu nhập (Khởi tạo, Chờ duyệt, Đã nhập kho)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng ReceiptDetail -->
+                <div class="table-schema">
+                    <h3 class="table-name">ReceiptDetail (Chi tiết nhập kho)</h3>
+                    <p class="table-description">Các mặt hàng chi tiết trong một phiếu nhập.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>receiptDetailId</td><td>Mã chi tiết phiếu nhập</td></tr>
+                            <tr><td>receiptId</td><td>Thuộc phiếu nhập nào (Khóa ngoại tham chiếu đến bảng GoodsReceipt)</td></tr>
+                            <tr><td>medicineId</td><td>Thuốc được nhập (Khóa ngoại tham chiếu đến bảng Medicine)</td></tr>
+                            <tr><td>batchNo</td><td>Lô sản xuất</td></tr>
+                            <tr><td>expiryDate</td><td>Hạn sử dụng lô thuốc</td></tr>
+                            <tr><td>quantity</td><td>Số lượng nhập</td></tr>
+                            <tr><td>importPrice</td><td>Giá nhập đầu vào</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -401,10 +478,32 @@
                         </thead>
                         <tbody>
                             <tr><td>issueId</td><td>Mã phiếu xuất kho</td></tr>
-                            <tr><td>date</td><td>Ngày giờ thực hiện xuất kho</td></tr>
-                            <tr><td>batchNo</td><td>Số hiệu lô hàng được xuất đi</td></tr>
+                            <tr><td>prescriptionId</td><td>Đơn thuốc xuất (nếu có) (Khóa ngoại tham chiếu đến bảng Prescription)</td></tr>
+                            <tr><td>warehouseId</td><td>Xuất từ kho nào (Khóa ngoại tham chiếu đến bảng Warehouse)</td></tr>
+                            <tr><td>issueDate</td><td>Ngày giờ thực hiện xuất kho</td></tr>
                             <tr><td>reason</td><td>Mục đích xuất kho (Xuất cho bệnh nhân ngoại trú, Xuất hủy hàng hết hạn, Xuất luân chuyển kho)</td></tr>
                             <tr><td>status</td><td>Trạng thái chứng từ (Đang lấy hàng, Đã xuất kho...)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng IssueDetail -->
+                <div class="table-schema">
+                    <h3 class="table-name">IssueDetail (Chi tiết xuất kho)</h3>
+                    <p class="table-description">Các lượng hàng xuất cụ thể.</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>issueDetailId</td><td>Mã chi tiết phiếu xuất</td></tr>
+                            <tr><td>issueId</td><td>Thuộc phiếu xuất nào (Khóa ngoại tham chiếu đến bảng GoodsIssue)</td></tr>
+                            <tr><td>medicineId</td><td>Thuốc được xuất (Khóa ngoại tham chiếu đến bảng Medicine)</td></tr>
+                            <tr><td>batchNo</td><td>Từ lô hàng nào</td></tr>
+                            <tr><td>quantity</td><td>Số lượng xuất</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -422,12 +521,35 @@
                         </thead>
                         <tbody>
                             <tr><td>invoiceId</td><td>Mã hóa đơn duy nhất</td></tr>
+                            <tr><td>visitId</td><td>Thuộc phiên khám nào (Khóa ngoại tham chiếu đến bảng MedicalVisit)</td></tr>
                             <tr><td>createdDate</td><td>Ngày giờ lập hóa đơn thanh toán trên hệ thống</td></tr>
                             <tr><td>paymentMethod</td><td>Phương thức bệnh nhân chọn để thanh toán (Tiền mặt, Thẻ tín dụng, Chuyển khoản...)</td></tr>
                             <tr><td>totalAmount</td><td>Tổng số tiền gốc của tất cả các dịch vụ và thuốc đã sử dụng</td></tr>
                             <tr><td>insuranceAmount</td><td>Số tiền được Bảo hiểm y tế bảo lãnh và hỗ trợ chi trả thay</td></tr>
                             <tr><td>finalAmount</td><td>Số tiền thực tế cuối cùng mà người bệnh phải nộp</td></tr>
                             <tr><td>status</td><td>Trạng thái thu phí (Chưa thu tiền, Đã thanh toán, Đã hủy)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bảng InvoiceDetail -->
+                <div class="table-schema">
+                    <h3 class="table-name">InvoiceDetail (Chi tiết Hóa đơn)</h3>
+                    <p class="table-description">Bảng các mục chi phí trong hóa đơn (dịch vụ, thuốc...).</p>
+                    <table class="schema-table">
+                        <thead>
+                            <tr>
+                                <th>Tên cột</th>
+                                <th>Mô tả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>detailId</td><td>Mã chi tiết hóa đơn</td></tr>
+                            <tr><td>invoiceId</td><td>Thuộc hóa đơn nào (Khóa ngoại tham chiếu đến bảng Invoice)</td></tr>
+                            <tr><td>itemType</td><td>Loại (SERVICE / MEDICINE)</td></tr>
+                            <tr><td>itemName</td><td>Tên dịch vụ/thuốc</td></tr>
+                            <tr><td>quantity</td><td>Số lượng</td></tr>
+                            <tr><td>unitPrice</td><td>Đơn giá</td></tr>
                         </tbody>
                     </table>
                 </div>
